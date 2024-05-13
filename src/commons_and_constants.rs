@@ -3,9 +3,9 @@ use dirs;
 pub fn user_dir() -> String {
     if let Some(path) = dirs::home_dir(){
         let path_string: String = path.to_string_lossy().into_owned();
-        return path_string;
+        path_string
     } else{
-        return String::new();
+        String::new()
     }
 }
 

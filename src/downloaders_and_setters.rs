@@ -1,10 +1,10 @@
-use crate::commons_and_constants::JSON_URL;
-use crate::user_dir;
-use colored::Colorize;
+
+
+
 use reqwest::blocking::Client;
-use serde::{Deserialize, Serialize};
-use serde_json::{Result, Value};
-use std::fs::{self, read_to_string, File};
+
+use git2;
+use std::fs::{File};
 use std::io::copy;
 use std::path::Path;
 
@@ -20,9 +20,9 @@ pub fn download_this_url_at_this_file(url: String, file_name: String) -> bool {
         }
         let mut file = File::create(&file_name).expect("msg");
         copy(&mut bytes.as_ref(), &mut file).expect("msg");
-        return true;
+        true
     } else {
         println!("a");
-        return false;
+        false
     }
 }

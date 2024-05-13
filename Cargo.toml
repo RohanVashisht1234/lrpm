@@ -10,6 +10,7 @@ clearscreen = "3.0.0"
 colored = "2.1.0"
 comfy-table = "7.1.1"
 dirs = "5.0.1"
+git2 = "0.18.3"
 reqwest = { version = "0.12.4", features = ["blocking"] }
 serde = { version = "1.0.201", features = ["derive", "serde_derive"] }
 serde_json = { version = "1.0.117", features = ["indexmap", "preserve_order", "alloc", "arbitrary_precision", "float_roundtrip", "raw_value", "unbounded_depth"] }

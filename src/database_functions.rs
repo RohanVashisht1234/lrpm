@@ -14,7 +14,7 @@ pub fn view_plugins() -> String {
             "Now\nadd some\nmulti line stuff",
             "This is awesome",
         ]);
-    return table.to_string();
+    table.to_string()
 }
 
 pub fn display_commands() -> String {
@@ -26,5 +26,5 @@ pub fn display_commands() -> String {
         .add_row(vec!["View Themes (colors)", "3"])
         .add_row(vec!["View Help", "4"])
         .add_row(vec!["View Help", "5"]);
-    return table.to_string();
+    table.to_string()
 }

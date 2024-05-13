@@ -3,7 +3,7 @@ pub mod commons_and_constants;
 pub mod installer;
 pub mod downloaders_and_setters;
 
-use clearscreen;
+
 use colored::Colorize;
 use std::io;
 use database_functions::*;
@@ -28,11 +28,10 @@ fn main() {
 
     let mut input_command = String::new();
     io::stdin().read_line(&mut input_command).unwrap();
-    if input_command == "1\n".to_string() {
+    if input_command == *"1\n" {
         println!("{}", "Which plugin do you want to install? >".bold().bright_yellow());
         let mut input_plugin_name = String::new();
         io::stdin().read_line(&mut input_plugin_name).unwrap();
         installer(input_plugin_name);
     }
-    return;
 }
