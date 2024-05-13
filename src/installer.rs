@@ -1,57 +1,54 @@
-use crate::user_dir;
 use crate::commons_and_constants::JSON_URL;
+use crate::downloaders_and_setters::download_this_url_at_this_file;
+use crate::user_dir;
+use colored::Colorize;
+use reqwest::blocking::Client;
+use serde::{Deserialize, Serialize};
+use serde_json::{Result, Value};
 use std::fs::{self, read_to_string, File};
 use std::io::copy;
 use std::path::Path;
-use reqwest::blocking::Client;
-use colored::Colorize;
-use serde::{Deserialize, Serialize};
-use serde_json::{Result, Value};
 
 #[derive(Serialize, Deserialize)]
 
 struct Addon {
     id: String,
-    description: String
+    description: String,
+    path: String,
 }
 #[derive(Serialize, Deserialize)]
 struct JSON {
     addons: Vec<Addon>,
 }
 
-pub fn installer(extension_name:String){
+pub fn installer(extension_name: String) {
+    let litexl_dir = user_dir() + "/.config/lite-xl";
     let lrpm_dir = user_dir() + "/.config/lrpm";
     let manifest_dir = lrpm_dir + "/bundles";
     let manifest_file = manifest_dir + "/manifest.json";
-    let client = Client::new();
 
-    // Send a GET request to the URL and get the response
-    let response = client.get(JSON_URL).send().expect("Internet issue");
-    if response.status().is_success() {
-        // Get the file data as bytes
-        let bytes = response.bytes().expect("Internet issue");
+    println!(
+        "{}",
+        "Manifests downloaded successfully!".bold().bright_green()
+    );
 
-        // Create directories if they don't exist
-        let parent_dir = Path::new(&manifest_file).parent().unwrap();
-        if !parent_dir.exists() {
-            let _ = std::fs::create_dir_all(parent_dir);
+    let data = read_to_string(&manifest_file).expect("msg");
+    let p: JSON = serde_json::from_str(&data).expect("msg");
+    for i in p.addons.iter() {
+        let cur_id = i.id.to_string() + "\n";
+        if cur_id  == extension_name {
+            let current_path = &i.path;
+            if current_path != &String::new() {
+                println!("ok");
+                let url: String = "https://raw.githubusercontent.com/lite-xl/lite-xl-plugins/master/"
+                    .to_string()
+                    + current_path;
+                if download_this_url_at_this_file(url, litexl_dir.clone() + "/" + current_path){
+                    println!("Successfully installed your plugin");
+                } else {
+                    println!("Was not able to install your plugin");
+                }
+            }
         }
-
-        // Create a file at the specified path
-        let mut file = File::create(&manifest_file).expect("msg");
-
-        // Write the downloaded file data to the file
-        copy(&mut bytes.as_ref(), &mut file).expect("msg");
-
-        println!("{}", "Manifests downloaded successfully!".bold().bright_green());
-
-        let data = read_to_string(&manifest_file).expect("msg");
-        let p:JSON = serde_json::from_str(&data).expect("msg");
-        for i in p.addons.iter(){
-            println!("{}             {}", i.id, termimad::inline(&i.description));
-        };
-
-    } else {
-        println!("Failed to download file: {}", response.status());
     }
 }
