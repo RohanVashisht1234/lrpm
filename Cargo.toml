@@ -1,6 +1,8 @@
 [package]
 name = "lrpm"
 version = "0.1.0"
+description = "Lite-xl's rusty plugin manager."
+authors = ["Rohan Vashisht"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
