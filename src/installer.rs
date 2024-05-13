@@ -1,4 +1,4 @@
-use crate::downloaders_and_setters::download_this_url_at_this_file;
+use crate::downloaders_and_setters::{download_this_url_at_this_file, git_clone};
 use crate::user_dir;
 use colored::Colorize;
 use serde::{Deserialize, Serialize};
@@ -49,7 +49,14 @@ pub fn installer(extension_name: String) {
                     }
                 }
             } else if let Some(current_remote) = &i.remote {
-                
+                let mut splitted_url = current_remote.split(":");
+                _ = splitted_url.next();
+                let actual_url = "https:".to_string() + splitted_url.next().unwrap();
+                let hash = splitted_url.next().unwrap().to_string();
+                println!("{}",actual_url);
+                println!("{}",hash);
+                println!("{}",litexl_dir.clone() + "/plugins");
+                git_clone(actual_url, litexl_dir.clone() + "/plugins", hash);
             }
         }
     }

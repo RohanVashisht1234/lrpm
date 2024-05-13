@@ -1,10 +1,7 @@
-
-
-
 use reqwest::blocking::Client;
 
-use git2;
-use std::fs::{File};
+use git2::{self, Repository, RepositoryOpenFlags};
+use std::fs::File;
 use std::io::copy;
 use std::path::Path;
 
@@ -24,5 +21,17 @@ pub fn download_this_url_at_this_file(url: String, file_name: String) -> bool {
     } else {
         println!("a");
         false
+    }
+}
+
+pub fn git_clone(repo_url: String, clone_path: String, commit_hash: String) {
+    match Repository::clone(&repo_url, clone_path) {
+        Ok(repo) => {
+            println!("Repository cloned successfully to {:?}", repo.path());
+            // Do further operations with the cloned repository if needed
+        }
+        Err(e) => {
+            eprintln!("Failed to clone repository: {}", e);
+        }
     }
 }
