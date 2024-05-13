@@ -21,14 +21,13 @@ pub fn installer(extension_name: String) {
     let litexl_dir = user_dir() + "/.config/lite-xl";
     let lrpm_dir = user_dir() + "/.config/lrpm";
     let manifest_dir = lrpm_dir + "/bundles";
-    let manifest_file = manifest_dir + "/manifest.json";
+    let manifest_file = manifest_dir.clone() + "/manifest.json";
 
     println!(
         "{}",
         "Manifests downloaded successfully!".bold().bright_green()
     );
-
-    let data = read_to_string(manifest_file).expect("msg");
+    let data = read_to_string(manifest_file.clone()).expect("msg");
     let p: JSON = serde_json::from_str(&data).expect("msg");
     for i in p.addons.iter() {
         let cur_id = i.id.to_string() + "\n";
@@ -41,7 +40,7 @@ pub fn installer(extension_name: String) {
                         "https://raw.githubusercontent.com/lite-xl/lite-xl-plugins/master/"
                             .to_string()
                             + current_path;
-                    if download_this_url_at_this_file(url, litexl_dir.clone() + "/" + current_path)
+                    if download_this_url_at_this_file(manifest_dir.clone(),url, litexl_dir.clone() + "/" + current_path)
                     {
                         println!("Successfully installed your plugin");
                     } else {
